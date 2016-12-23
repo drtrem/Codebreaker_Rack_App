@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Codebreaker</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+      <h1>Codebreaker!</h1>
+      <h2>Name: '<%= data_session(:name) %>'<h2>
+      <h3>Attempts: '<%= game.attempts %>'<h3>
+      <p><%= data_session(:hint) ? "Hint: #{data_session(:hint)}" : 'Hint: *' %></p>
+      <a href="/hints"><button>Hint!</button></a>
+      <% if game.status == nil %>
+        <h3>Your answer: '<%= data_session(:code) %>'</h3>
+        <h3>Your guess: '<%= data_session(:plus) %>'</h3>
+        <form method="post" action="/play_game">
+          <input name="code" type="text" pattern="[1-6]{4,}" maxlength="4" required placeholder="Guess:">
+          <input type="submit" value="Submit!">
+        </form>
+      <% else %>
+        <div id="bt">
+          <h2>'<%= game.status %>'<h2>
+          <table>
+            <tr>
+              <td><a href="/exit"><button>Exit!</button></a></td>
+              <td><a href="/save"><button>Save statistics!</button></a></td>
+              <td><a href="/open"><button>Open statistics!</button></a></td>
+            </tr>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </body>
+</html>
