@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Codebreaker</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+  	  <h1>Statistics!</h1>
+      <p><%= File.open('./statistics.txt', 'r'){ |f| f.read } %></p>
+      <form method="post" action="/exit">
+        <input type="submit" name="submit" value="Return!">
+      </form>  
+    </div>
+  </body>
+</html>

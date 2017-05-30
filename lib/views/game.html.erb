@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Codebreaker</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+  	  <h1>Codebreaker!</h1>
+  	  <h2>Name: '<%= data_session(:name) %>'<h2>
+  	  <h3>Attempts: '<%= @game.attempts %>'<h3>
+  	  <div id="hint">
+      	<p><%= @request.session[:hint] ? "Hint: #{data_session(:hint)}" : 'Hint: *' %></p>
+      	<form method="post" action="/hints">
+      	  <button>Hint!</button>
+      	</form>
+      </div>
+      <% if @game.status == nil %>
+      <h3>Your answer: '<%= data_session(:code) %>'</h3>
+      <h3>Your guess: '<%= data_session(:plus) %>'</h3>
+      <form method="post" action="/play_game">
+        <input name="code" type="text" pattern="[1-6]{4,}" maxlength="4" placeholder="Guess:">
+        <input type="submit" value="Submit!">
+      </form>
+      <% else %>
+      <div id="bt">
+      	<h2>'<%= @game.status %>'<h2>
+      	<table>
+		  <tr>
+        	<td><form method="post" action="/exit">
+          	  <input type="submit" value="Exit">
+      		</form></td>
+      		<td><form method="post" action="/save">
+          	  <input type="submit" value="Save statistics">
+      		</form></td>
+      		<td><form method="post" action="/open">
+          	  <input type="submit" value="Open statistics">
+      		</form></td>
+      	  </tr>
+		</table>
+      </div>
+      <% end %>
+    </div>
+  </body>
+</html>
