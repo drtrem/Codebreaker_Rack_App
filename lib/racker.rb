@@ -10,12 +10,11 @@ class Racker
 
   def initialize(env)
     @request = Rack::Request.new(env)
-    @game = game
   end
 
   def response
     case @request.path
-    when '/' then Rack::Response.new(render('index.html.erb'))
+    when '/' then start_game
     when '/game' then Rack::Response.new(render('game.html.erb'))
     when '/play' then play
     when '/play_game' then play_game
@@ -33,6 +32,12 @@ class Racker
     ERB.new(File.read(path)).result(binding)
   end
 
+  def start_game
+    @request.session.clear
+    game
+    Rack::Response.new(render('index.html.erb'))
+  end
+
   def play
     @request.session[:name] = @request.params['name']
     redirect_to('/game')
@@ -40,12 +45,12 @@ class Racker
 
   def play_game
     @request.session[:code] = @request.params['code']
-    @request.session[:plus] = @game.guess(@request.params['code'])
+    @request.session[:plus] = game.guess(@request.params['code'])
     redirect_to('/game')
   end
 
   def hints
-    @request.session[:hint] = @game.hint
+    @request.session[:hint] = game.hint
     redirect_to('/game')
   end
 
@@ -55,10 +60,7 @@ class Racker
   end
 
   def save
-    File.open('./statistics.txt', 'a') do |f|
-      f.puts 'Name: ', @request.session[:name], @game.statistik, Time.now, '<br>'
-      f.puts "------------------------------<br>"
-    end
+    game.save(@request.session[:name])
     redirect_to('/game')
   end
 

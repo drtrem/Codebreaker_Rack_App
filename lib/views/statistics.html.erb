@@ -6,11 +6,9 @@
   </head>
   <body>
     <div id="container">
-  	  <h1>Statistics!</h1>
-      <p><%= File.open('./statistics.txt', 'r'){ |f| f.read } %></p>
-      <form method="post" action="/exit">
-        <input type="submit" name="submit" value="Return!">
-      </form>  
+      <h1>Statistics!</h1>
+      <p><%= game.open %></p>
+      <a href="/exit"><button>Exit!</button></a> 
     </div>
   </body>
 </html>
